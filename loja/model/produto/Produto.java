@@ -7,7 +7,7 @@ public class Produto {
     private BigDecimal preco;
     private int estoque;
 
-    public Produto(int codigo, String nome, BigDecimal preco, int estoque){
+    public Produto(int codigo, String nome, BigDecimal preco, int estoque) {
         this.codigo=codigo;
         this.nome=nome;
         this.preco=preco;
@@ -21,21 +21,19 @@ public class Produto {
     public String getNome() {
         return nome;
     }
-    public int getEstoque(){
+    public int getEstoque() {
         return this.estoque;
     }
 
-    public void setPreco(BigDecimal novoPreco){
-            this.preco=novoPreco;
-        }
+    public void setPreco(BigDecimal novoPreco) {
+        this.preco=novoPreco;
+    }
 
-    public void setEstoque(int novoEstoque){
+    public void setEstoque(int novoEstoque) {
         this.estoque=novoEstoque;
     }
     
-    public void printarDados(){
-        System.out.printf("Produto %d-%s R$%.2f-%d unidades\n",codigo, nome, preco, estoque);
+    public void printarDados() {
+        System.out.printf("Produto %d: %s | R$ %s | %d unidades\n", codigo, nome, preco, estoque);
     }
-
-
 }
