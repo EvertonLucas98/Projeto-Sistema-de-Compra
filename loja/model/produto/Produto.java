@@ -24,6 +24,10 @@ public class Produto {
     public int getEstoque() {
         return this.estoque;
     }
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public void setPreco(BigDecimal novoPreco) {
         this.preco=novoPreco;
