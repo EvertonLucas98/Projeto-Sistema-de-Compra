@@ -1,10 +1,11 @@
 package loja;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Scanner;
-
-import loja.model.cliente.Cliente;
-import loja.model.produto.Produto;
+import loja.model.cliente.*;
+import loja.model.produto.*;
+import loja.ui.InputUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -46,6 +47,9 @@ public class Main {
                 System.out.print("Estoque: ");
                 int estoque = sc.nextInt();
 
+                System.out.print("Tipo(1.Digital - 2.Fisico - 3.Perecível): ");
+                int tipo = sc.nextInt();
+
                 // Dobra o tamanho do array se tiver cheio
                 if(totalProdutos == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
@@ -58,11 +62,32 @@ public class Main {
                 }
 
                 // Cria um novo produto
-                Produto novoProduto = new Produto(codigo, nome, preco, estoque);
-                // Adiciona o novo produto no array
-                produtos[totalProdutos] = novoProduto;
-                // Variavel de controle para o tamanho do array
-                totalProdutos++;
+                if(tipo==1){
+                    String categoria=InputUtils.lerString("Categoria:");
+                    Produto novoProduto = new ProdutoDigital(codigo, nome, preco, estoque, categoria);
+                    //adiciona novo produto no array
+                    produtos[totalProdutos] = novoProduto;
+                    // Variavel de controle para o tamanho do array
+                    totalProdutos++;
+                }
+                if(tipo==2){
+                    BigDecimal peso=InputUtils.lerBigDecimal("Peso:");
+                    Produto novoProduto = new ProdutoFisico(codigo, nome, preco, estoque, peso);
+                    //adiciona novo produto no array
+                    produtos[totalProdutos] = novoProduto;
+                    // Variavel de controle para o tamanho do array
+                    totalProdutos++;
+                }
+                if(tipo==3){
+                    BigDecimal peso=InputUtils.lerBigDecimal("Peso:");
+                    LocalDate data=InputUtils.lerData("Validade:");
+                    Produto novoProduto = new ProdutoPerecivel(codigo, nome, preco, estoque, peso, data);
+                    //adiciona novo produto no array
+                    produtos[totalProdutos] = novoProduto;
+                    // Variavel de controle para o tamanho do array
+                    totalProdutos++;
+                }
+              
             } else if(opcao == 2) { // Alterar Produto
                 if (produtos[0] != null) {
                     System.out.print("\tProduto: ");
