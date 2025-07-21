@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import loja.model.cliente.*;
 import loja.model.produto.*;
+import loja.ui.ConsoleMenu;
 import loja.ui.InputUtils;
 
 public class Main {
@@ -14,24 +15,25 @@ public class Main {
         ProdutoFisico[] produtosFisicos = new ProdutoFisico[100];
         ProdutoDigital[] produtosDigitais = new ProdutoDigital[100];
         ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[100];
-        Cliente[] clientes = new Cliente[100];
-        int totProdFis=0, totProdDig=0, totProdPer=0, totalClientes=0, opcao, tipo;
+        PessoaFisica[] clienteFisico = new PessoaFisica[100];
+        PessoaJuridica[] clienteJuridico = new PessoaJuridica[100];
+        int totProdFis=0, totProdDig=0, totProdPer=0;
+        int totClienteFis=0, totClienteJur=0;
+        int opcao, tipo;
 
         do {
             // Menu
-            System.out.println("\n1. Cadastrar Produto");
-            System.out.println("2. Alterar Produto");
-            System.out.println("3. Cadastrar Cliente");
-            System.out.println("4. Alterar Cliente");
-            System.out.println("5. Criar Nota de Compra");
-            System.out.println("6. Listar Notas Emitidas");
-            System.out.println("7. Listar Produtos");
-            System.out.println("8. Listar Clientes");
-            System.out.println("0. Sair\n");
-
-            System.out.print("Opcao: ");
-            opcao = sc.nextInt();
-            sc.nextLine();
+            ConsoleMenu menu = new ConsoleMenu("Menu", 8);
+            menu.adicionarOpcao("Cadastrar Produto");
+            menu.adicionarOpcao("Alterar Produto");
+            menu.adicionarOpcao("Cadastrar Cliente");
+            menu.adicionarOpcao("Alterar Cliente");
+            menu.adicionarOpcao("Criar Nota de Compra");
+            menu.adicionarOpcao("Listar Notas Emitidas");
+            menu.adicionarOpcao("Listar Produtos");
+            menu.adicionarOpcao("Listar Clientes");
+            menu.mostrarMenu();
+            opcao = InputUtils.lerIntNumIntervalo("\nOpcao: ", 0, 8);
             
             if(opcao == 0) { // Encerrar programa
                 System.out.println("\nSaindo...\n");
@@ -48,26 +50,17 @@ public class Main {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoFisico[] arrayExtendido = new ProdutoFisico[(produtosFisicos.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosFisicos.length; i++)
-                        arrayExtendido[i] = produtosFisicos[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    produtosFisicos = arrayExtendido;
+                    copiarProduto(produtosFisicos, arrayExtendido);
                 } else if(totProdDig == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoDigital[] arrayExtendido = new ProdutoDigital[(produtosDigitais.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosDigitais.length; i++)
-                        arrayExtendido[i] = produtosDigitais[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    produtosDigitais = arrayExtendido;
+                    copiarProduto(produtosDigitais, arrayExtendido);
                 } else if(totProdPer == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoPerecivel[] arrayExtendido = new ProdutoPerecivel[(produtosPereciveis.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosPereciveis.length; i++)
-                        arrayExtendido[i] = produtosPereciveis[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    produtosPereciveis = arrayExtendido;
+                    copiarProduto(produtosPereciveis, arrayExtendido);
                 }
 
                 // Cria um novo produto
@@ -132,36 +125,30 @@ public class Main {
                         System.out.println("\nNenhum produto cadastrado!");
                 }
             } else if(opcao == 3) { // Cadastrar Cliente
-                System.out.print("\nCPF: ");
-                sc.nextLine();
-                String cpf = sc.nextLine();
-                
-                System.out.print("Nome: ");
-                String nome = sc.nextLine();
-                
-                System.out.print("Endereco: ");
-                String endereco = sc.nextLine();
-                
-                System.out.print("Telefone: ");
-                String fone = sc.nextLine();
+                String id = InputUtils.lerString("\nID: ");
+                String nome = InputUtils.lerString("Nome: ");
+                String endereco = InputUtils.lerString("Endereço: ");
+                String telefone = InputUtils.lerString("Telefone: ");
+                tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica", 1, 2);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totalClientes == 100) {
+                if(totClienteFis == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
-                    Cliente[] clientesExtendido = new Cliente[(clientes.length)*2];
+                    PessoaFisica[] arrayExtendido = new PessoaFisica[(clienteFisico.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<clientes.length; i++)
-                        clientesExtendido[i] = clientes[i];
+                    for(int i=0; i<clienteFisico.length; i++)
+                        arrayExtendido[i] = clienteFisico[i];
                     // O array que estava cheio agora tem o dobro de tamanho
-                    clientes = clientesExtendido;
+                    clienteFisico = arrayExtendido;
+                } else if(totClienteJur == 100) {
+                    // Cria um novo array com o dobro de tamanho do array cheio
+                    PessoaJuridica[] arrayExtendido = new PessoaJuridica[(clienteJuridico.length)*2];
+                    // Copia todos os elementos do array cheio para o array extendido
+                    for(int i=0; i<clienteJuridico.length; i++)
+                        arrayExtendido[i] = clienteJuridico[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    clienteJuridico = arrayExtendido;
                 }
-
-                // Cria um novo cliente
-                Cliente novoCliente = new Cliente(cpf, nome, endereco, fone);
-                // Adiciona o novo cliente no array
-                clientes[totalClientes] = novoCliente;
-                // Variavel de controle para o tamanho do array
-                totalClientes++;
             } else if(opcao == 4) { // Alterar Cliente (NÃO IMPLEMENTADO)
                 
             } else if(opcao == 5) { // Criar Nota de Compra (NÃO IMPLEMENTADO)
@@ -177,8 +164,10 @@ public class Main {
                 if (produtosPereciveis[0] != null)
                     listarProdutos(produtosPereciveis);
             } else if(opcao == 8) { // Listar Clientes
-                System.out.print("\n");
-                listarClientes(clientes);
+                /*if (clienteFisico[0] != null)
+                    listarClientes(produtosPereciveis);
+                if (clienteJuridico[0] != null)
+                    listarClientes(produtosPereciveis);*/
             } else // Opcao invalida
                 System.out.println("\nOpção Inválida!");
         } while(opcao != 0);
@@ -238,5 +227,13 @@ public class Main {
             } while(opcaoProduto != 0);
         } else
             System.out.println("Produto não encontrado!");
+    }
+
+    private static void copiarProduto(Produto[] produto, Produto[] arrayExtendido) {
+        // Copia todos os elementos do array cheio para o array extendido
+        for(int i=0; i<produto.length; i++)
+            arrayExtendido[i] = produto[i];
+        // O array que estava cheio agora tem o dobro de tamanho
+        produto = arrayExtendido;
     }
 }

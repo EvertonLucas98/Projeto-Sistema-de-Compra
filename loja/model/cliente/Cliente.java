@@ -28,10 +28,6 @@ public class Cliente {
     public String getTelefone() {
         return telefone;
     }
-
-    public void setid(String id) {
-        this.id = id;
-    }
     
     public void setNome(String nome) {
         this.nome = nome;
