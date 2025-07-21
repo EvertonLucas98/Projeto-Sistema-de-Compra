@@ -210,7 +210,6 @@ public class Main {
 
     private static void alterarProduto(Produto produto) {
         if(produto != null) {
-            Scanner sc = new Scanner(System.in);
             int opcaoProduto;
             
             do {
@@ -218,25 +217,20 @@ public class Main {
                 System.out.println("\t2. Alterar Preço");
                 System.out.println("\t3. Alterar Estoque");
                 System.out.println("\t0. Sair");
-                System.out.print("\n\tOpção: ");
-                opcaoProduto = sc.nextInt();
-                sc.nextLine();
+                opcaoProduto = InputUtils.lerIntNumIntervalo("\n\tOpção: ", 0, 3);
 
                 if(opcaoProduto == 0) {
                     System.out.println("\tSaindo das alterações...");
                 } else if(opcaoProduto == 1) {
-                    System.out.print("\tNovo Nome: ");
-                    String novoNome = sc.nextLine();
+                    String novoNome = InputUtils.lerString("\tNovo Nome: ");
                     produto.setNome(novoNome);
                     System.out.println("\tNome alterado com sucesso!");
                 } else if(opcaoProduto == 2) {
-                    System.out.print("\tNovo Preço: ");
-                    BigDecimal novoPreco = new BigDecimal(sc.nextLine());
+                    BigDecimal novoPreco = InputUtils.lerBigDecimal("\tNovo Preço: ");
                     produto.setPreco(novoPreco);
                     System.out.println("\tPreço alterado com sucesso!");
                 } else if(opcaoProduto == 3) {
-                    System.out.print("\tNovo Estoque: ");
-                    int novoEstoque = sc.nextInt();
+                    int novoEstoque = InputUtils.lerInt("\tNovo Estoque: ");
                     produto.setEstoque(novoEstoque);
                     System.out.println("\tEstoque alterado com sucesso!");
                 } else // Opcao invalida

@@ -1,48 +1,51 @@
 package loja.model.cliente;
 
 public class Cliente {
-    private String cpf, nome, endereco, fone;
+    private String id;
+    private String nome;
+    private String endereco;
+    private String telefone;
 
-    public Cliente(String cpf, String nome, String endereco, String fone) {
-        this.cpf = cpf;
+    public Cliente(String id, String nome, String endereco, String telefone) {
+        this.id = id;
         this.nome = nome;
         this.endereco = endereco;
-        this.fone = fone;
+        this.telefone = telefone;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getId() {
+        return id;
     }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
+    
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getEndereco() {
         return endereco;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setid(String id) {
+        this.id = id;
+    }
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
 
-    public String getFone() {
-        return fone;
-    }
-
-    public void setFone(String fone) {
-        this.fone = fone;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public void printarDados() {
-        System.out.printf("CPF: %s | Nome: %s | Endereço: %s | Telefone: %s\n", cpf, nome, endereco, fone);
+        System.out.printf("Identificador: %s | Nome: %s | Endereço: %s | Telefone: %s | ", id, nome, endereco, telefone);
     }
 }
