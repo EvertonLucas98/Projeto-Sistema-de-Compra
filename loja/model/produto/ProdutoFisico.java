@@ -8,8 +8,12 @@ public class ProdutoFisico extends Produto {
         super(codigo, nome, preco, estoque);
         this.peso=peso;
     }
+    
+    public BigDecimal getPeso(){
+        return this.peso;
+    }
 
-    public void PrintarDados() {
+    public void printarDados() {
         super.printarDados();
         System.out.printf("Produto fisico-Peso: %.2f\n",peso);
     }
