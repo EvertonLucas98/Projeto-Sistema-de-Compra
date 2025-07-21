@@ -99,40 +99,16 @@ public class Main {
             } else if(opcao == 2) { // Alterar Produto
                 System.out.println("Tipo do Produto");
                 tipo = InputUtils.lerIntNumIntervalo("1. Digital, 2. Fisico ou 3. Perecível: ", 1, 3);
-                if(tipo == 1) {
-                    if (produtosDigitais[0] != null) {
-                        System.out.print("\tProduto: ");
-                        String nomeProduto = sc.nextLine();
-                        Produto produto = buscarProduto(produtosDigitais, nomeProduto);
-                        if(produto != null)
-                            alterarProduto(produto);
-                        else
-                            System.out.println("\tProduto não encontrado!");
-                    } else
-                        System.out.println("\nNenhum produto cadastrado!");
-                } else if(tipo == 2) {
-                    if (produtosFisicos[0] != null) {
-                        System.out.print("\tProduto: ");
-                        String nomeProduto = sc.nextLine();
-                        Produto produto = buscarProduto(produtosFisicos, nomeProduto);
-                        if(produto != null)
-                            alterarProduto(produto);
-                        else
-                            System.out.println("\tProduto não encontrado!");
-                    } else
-                        System.out.println("\nNenhum produto cadastrado!");
-                } else {
-                    if (produtosPereciveis[0] != null) {
-                        System.out.print("\tProduto: ");
-                        String nomeProduto = sc.nextLine();
-                        Produto produto = buscarProduto(produtosPereciveis, nomeProduto);
-                        if(produto != null)
-                            alterarProduto(produto);
-                        else
-                            System.out.println("\tProduto não encontrado!");
-                    } else
-                        System.out.println("\nNenhum produto cadastrado!");
-                }
+                
+                if (produtosFisicos[0] != null | produtosDigitais[0] != null | produtosPereciveis[0] != null) {
+                    String nomeProduto = InputUtils.lerString("\tProduto: ");
+                    Produto produto = buscarProduto(tipo, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
+                    if(produto != null)
+                        alterarProduto(produto);
+                    else
+                        System.out.println("\tProduto não encontrado!");
+                } else
+                    System.out.println("\nNenhum produto cadastrado!");
             } else if(opcao == 3) { // Cadastrar Cliente
                 String id = InputUtils.lerString("\nID: ");
                 String nome = InputUtils.lerString("Nome: ");
@@ -161,17 +137,33 @@ public class Main {
             } else if(opcao == 4) { // Alterar Cliente (NÃO IMPLEMENTADO)
                 
             } else if(opcao == 5) { // Criar Nota de Compra (NÃO IMPLEMENTADO)
-                
+                String numero = InputUtils.lerString("Numero: ");
+                LocalDate data = InputUtils.lerData("Data: ");
+                // Cliente cliente = ; (Preciso de listarClientes)
+                if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
+                    System.out.println("================ Lista de Produtos ================");
+                    listarProdutos(produtosDigitais);
+                    listarProdutos(produtosFisicos);
+                    listarProdutos(produtosPereciveis);
+                    System.out.println("Escolha um tipo do Produto:");
+                    tipo = InputUtils.lerIntNumIntervalo("1. Digital, 2. Fisico ou 3. Perecível: ", 1, 3);
+                    String nomeProduto = InputUtils.lerString("\tNome do produto: ");
+                    Produto produto = buscarProduto(tipo, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
+                    // if(produto != null)
+                        
+                    // else
+                    //     System.out.println("\tProduto não encontrado!");
+                }
             } else if(opcao == 6) { // Listar Notas Emitidas (NÃO IMPLEMENTADO)
                 
             } else if(opcao == 7) { // Listar Produtos
                 System.out.print("\n");
-                if (produtosDigitais[0] != null)
+                if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
+                    System.out.println("================ Lista de Produtos ================");
                     listarProdutos(produtosDigitais);
-                if (produtosFisicos[0] != null)
                     listarProdutos(produtosFisicos);
-                if (produtosPereciveis[0] != null)
                     listarProdutos(produtosPereciveis);
+                }
             } else if(opcao == 8) { // Listar Clientes
                 /*if (clienteFisico[0] != null)
                     listarClientes(produtosPereciveis);
@@ -197,11 +189,22 @@ public class Main {
         }
     }
 
-    private static Produto buscarProduto(Produto[] produtos, String nomeProduto) {
-        for(int i=0; i<produtos.length; i++) {
-            if(produtos[i] != null)
-                if(produtos[i].getNome().equals(nomeProduto))
-                    return produtos[i];
+    private static Produto buscarProduto(int tipo, ProdutoFisico[] produtosFisicos, ProdutoDigital[] produtosDigitais, ProdutoPerecivel[] produtosPereciveis, String nomeProduto) {
+        if(tipo == 1) {
+            for(int i=0; i<produtosDigitais.length; i++)
+                if(produtosDigitais[i] != null)
+                    if(produtosDigitais[i].getNome().equals(nomeProduto))
+                        return produtosDigitais[i];
+        } else if(tipo == 2) {
+            for(int i=0; i<produtosFisicos.length; i++)
+                if(produtosFisicos[i] != null)
+                    if(produtosFisicos[i].getNome().equals(nomeProduto))
+                        return produtosFisicos[i];
+        } else {
+            for(int i=0; i<produtosPereciveis.length; i++)
+                if(produtosPereciveis[i] != null)
+                    if(produtosPereciveis[i].getNome().equals(nomeProduto))
+                        return produtosPereciveis[i];
         }
         return null;
     }
