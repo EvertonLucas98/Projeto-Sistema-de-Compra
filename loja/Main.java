@@ -12,9 +12,9 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        ProdutoFisico[] produtosFisicos = new ProdutoFisico[100];
-        ProdutoDigital[] produtosDigitais = new ProdutoDigital[100];
-        ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[100];
+        ProdutoFisico[] produtosFisicos = new ProdutoFisico[2];
+        ProdutoDigital[] produtosDigitais = new ProdutoDigital[2];
+        ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[2];
         PessoaFisica[] clienteFisico = new PessoaFisica[100];
         PessoaJuridica[] clienteJuridico = new PessoaJuridica[100];
         int totProdFis=0, totProdDig=0, totProdPer=0;
@@ -46,21 +46,30 @@ public class Main {
                 tipo = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totProdFis == 100) {
+                if(totProdFis == produtosFisicos.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoFisico[] arrayExtendido = new ProdutoFisico[(produtosFisicos.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProdutos(produtosFisicos, arrayExtendido);
-                } else if(totProdDig == 100) {
+                    for(int i=0; i<produtosFisicos.length; i++)
+                        arrayExtendido[i] = produtosFisicos[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    produtosFisicos = arrayExtendido;
+                } else if(totProdDig == produtosDigitais.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoDigital[] arrayExtendido = new ProdutoDigital[(produtosDigitais.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProdutos(produtosDigitais, arrayExtendido);
-                } else if(totProdPer == 100) {
+                    for(int i=0; i<produtosDigitais.length; i++)
+                        arrayExtendido[i] = produtosDigitais[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    produtosDigitais = arrayExtendido;
+                } else if(totProdPer == produtosPereciveis.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoPerecivel[] arrayExtendido = new ProdutoPerecivel[(produtosPereciveis.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProdutos(produtosPereciveis, arrayExtendido);
+                    for(int i=0; i<produtosPereciveis.length; i++)
+                        arrayExtendido[i] = produtosPereciveis[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    produtosPereciveis = arrayExtendido;
                 }
 
                 // Cria um novo produto
@@ -132,7 +141,7 @@ public class Main {
                 tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica", 1, 2);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totClienteFis == 100) {
+                if(totClienteFis == clienteFisico.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     PessoaFisica[] arrayExtendido = new PessoaFisica[(clienteFisico.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
@@ -140,7 +149,7 @@ public class Main {
                         arrayExtendido[i] = clienteFisico[i];
                     // O array que estava cheio agora tem o dobro de tamanho
                     clienteFisico = arrayExtendido;
-                } else if(totClienteJur == 100) {
+                } else if(totClienteJur == clienteJuridico.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     PessoaJuridica[] arrayExtendido = new PessoaJuridica[(clienteJuridico.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
@@ -227,21 +236,5 @@ public class Main {
             } while(opcaoProduto != 0);
         } else
             System.out.println("Produto não encontrado!");
-    }
-
-    private static void copiarProdutos(Produto[] produto, Produto[] arrayExtendido) {
-        // Copia todos os elementos do array cheio para o array extendido
-        for(int i=0; i<produto.length; i++)
-            arrayExtendido[i] = produto[i];
-        // O array que estava cheio agora tem o dobro de tamanho
-        produto = arrayExtendido;
-    }
-
-    private static void copiarClientes(Produto[] produto, Produto[] arrayExtendido) {
-        // Copia todos os elementos do array cheio para o array extendido
-        for(int i=0; i<produto.length; i++)
-            arrayExtendido[i] = produto[i];
-        // O array que estava cheio agora tem o dobro de tamanho
-        produto = arrayExtendido;
     }
 }
