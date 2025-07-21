@@ -5,26 +5,41 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class InputUtils {
-    static Scanner e = new Scanner(System.in);
+    private static Scanner e = new Scanner(System.in);
 
     public static String lerString(String texto){
-        System.out.println(texto);
-        return e.nextLine();      
+        System.out.print(texto);
+        return e.nextLine();
     }
 
     public static int lerInt(String texto){
-        System.out.println(texto);
-        return e.nextInt();      
+        System.out.print(texto);
+        int num = e.nextInt();
+        e.nextLine(); // Limpa o buffer
+        return num;
     }
-
+    
+    public static int lerIntNumIntervalo(String texto, int min, int max){
+        while (true) {
+            System.out.print(texto);
+            int input = e.nextInt();
+            e.nextLine(); // Limpa o buffer
+            if (input >= min && input <= max) {
+                return input;
+            } else {
+                System.out.println("\tErro: Digite um número entre " + min + " e " + max + ".");
+            }
+        }
+    }
+    
     public static BigDecimal lerBigDecimal(String texto){
-        System.out.println(texto);
-        return new BigDecimal(e.next());
+        System.out.print(texto);
+        return new BigDecimal(e.nextLine());
     }
 
     public static LocalDate lerData(String texto){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        System.out.println(texto);
-        return LocalDate.parse(e.nextLine(),formato);
+        System.out.print(texto);
+        return LocalDate.parse(e.nextLine(), formato);
     }
 }

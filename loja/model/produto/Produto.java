@@ -22,11 +22,15 @@ public class Produto {
         return nome;
     }
     public int getEstoque() {
-        return this.estoque;
+        return estoque;
+    }
+    
+    public BigDecimal getPreco() {
+        return preco;
     }
     
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome=nome;
     }
 
     public void setPreco(BigDecimal novoPreco) {
@@ -38,6 +42,6 @@ public class Produto {
     }
     
     public void printarDados() {
-        System.out.printf("Produto %d: %s | R$ %s | %d unidades\n", codigo, nome, preco, estoque);
+        System.out.printf("Produto %d: %s | R$ %s | %d unidades | ", codigo, nome, preco, estoque);
     }
 }

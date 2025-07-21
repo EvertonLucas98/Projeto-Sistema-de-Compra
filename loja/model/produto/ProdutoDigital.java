@@ -10,12 +10,11 @@ public class ProdutoDigital extends Produto {
     }
 
     public String getCategoria(){
-        return this.categoria;
+        return categoria;
     }
 
     public void printarDados() {
         super.printarDados();
-        System.out.println("Produto digital-Categoria: "+categoria);
+        System.out.println("Categoria: "+categoria);
     }
-
 }

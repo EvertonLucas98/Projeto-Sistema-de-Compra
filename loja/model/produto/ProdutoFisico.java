@@ -10,11 +10,16 @@ public class ProdutoFisico extends Produto {
     }
     
     public BigDecimal getPeso(){
-        return this.peso;
+        return peso;
     }
 
     public void printarDados() {
         super.printarDados();
-        System.out.printf("Produto fisico-Peso: %.2f\n",peso);
+        System.out.printf("Peso: %.2f\n", peso);
+    }
+
+    public void printarDadosPereciveis() {
+        super.printarDados();
+        System.out.printf("Peso: %.2f", peso);
     }
 }

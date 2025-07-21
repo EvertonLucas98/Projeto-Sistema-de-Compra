@@ -11,9 +11,11 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        Produto[] produtos = new Produto[100];
+        ProdutoFisico[] produtosFisicos = new ProdutoFisico[100];
+        ProdutoDigital[] produtosDigitais = new ProdutoDigital[100];
+        ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[100];
         Cliente[] clientes = new Cliente[100];
-        int totalProdutos=0, totalClientes=0, opcao;
+        int totProdFis=0, totProdDig=0, totProdPer=0, totalClientes=0, opcao, tipo;
 
         do {
             // Menu
@@ -34,68 +36,101 @@ public class Main {
             if(opcao == 0) { // Encerrar programa
                 System.out.println("\nSaindo...\n");
             } else if(opcao == 1) { // Cadastrar Produto
-                System.out.print("\nCódigo: ");
-                int codigo = sc.nextInt();
-                sc.nextLine(); // Limpa o buffer
-
-                System.out.print("Nome: ");
-                String nome = sc.nextLine();
-
-                System.out.print("Preço: ");
-                BigDecimal preco = new BigDecimal(sc.nextLine());
-
-                System.out.print("Estoque: ");
-                int estoque = sc.nextInt();
-
-                System.out.print("Tipo(1.Digital - 2.Fisico - 3.Perecível): ");
-                int tipo = sc.nextInt();
+                System.out.print("\n");
+                int codigo = InputUtils.lerInt("Código: ");
+                String nome = InputUtils.lerString("Nome ");
+                BigDecimal preco = InputUtils.lerBigDecimal("Preço: ");
+                int estoque = InputUtils.lerInt("Estoque: ");
+                tipo = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totalProdutos == 100) {
+                if(totProdFis == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
-                    Produto[] produtosExtendido = new Produto[(produtos.length)*2];
+                    ProdutoFisico[] arrayExtendido = new ProdutoFisico[(produtosFisicos.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtos.length; i++)
-                        produtosExtendido[i] = produtos[i];
+                    for(int i=0; i<produtosFisicos.length; i++)
+                        arrayExtendido[i] = produtosFisicos[i];
                     // O array que estava cheio agora tem o dobro de tamanho
-                    produtos = produtosExtendido;
+                    produtosFisicos = arrayExtendido;
+                } else if(totProdDig == 100) {
+                    // Cria um novo array com o dobro de tamanho do array cheio
+                    ProdutoDigital[] arrayExtendido = new ProdutoDigital[(produtosDigitais.length)*2];
+                    // Copia todos os elementos do array cheio para o array extendido
+                    for(int i=0; i<produtosDigitais.length; i++)
+                        arrayExtendido[i] = produtosDigitais[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    produtosDigitais = arrayExtendido;
+                } else if(totProdPer == 100) {
+                    // Cria um novo array com o dobro de tamanho do array cheio
+                    ProdutoPerecivel[] arrayExtendido = new ProdutoPerecivel[(produtosPereciveis.length)*2];
+                    // Copia todos os elementos do array cheio para o array extendido
+                    for(int i=0; i<produtosPereciveis.length; i++)
+                        arrayExtendido[i] = produtosPereciveis[i];
+                    // O array que estava cheio agora tem o dobro de tamanho
+                    produtosPereciveis = arrayExtendido;
                 }
 
                 // Cria um novo produto
                 if(tipo==1){
-                    String categoria=InputUtils.lerString("Categoria:");
-                    Produto novoProduto = new ProdutoDigital(codigo, nome, preco, estoque, categoria);
+                    String categoria=InputUtils.lerString("Categoria: ");
+                    ProdutoDigital novoProduto = new ProdutoDigital(codigo, nome, preco, estoque, categoria);
                     //adiciona novo produto no array
-                    produtos[totalProdutos] = novoProduto;
+                    produtosDigitais[totProdDig] = novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totalProdutos++;
-                }
-                if(tipo==2){
-                    BigDecimal peso=InputUtils.lerBigDecimal("Peso:");
-                    Produto novoProduto = new ProdutoFisico(codigo, nome, preco, estoque, peso);
+                    totProdDig++;
+                } else if(tipo==2){
+                    BigDecimal peso=InputUtils.lerBigDecimal("Peso: ");
+                    ProdutoFisico novoProduto = new ProdutoFisico(codigo, nome, preco, estoque, peso);
                     //adiciona novo produto no array
-                    produtos[totalProdutos] = novoProduto;
+                    produtosFisicos[totProdFis] = novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totalProdutos++;
-                }
-                if(tipo==3){
-                    BigDecimal peso=InputUtils.lerBigDecimal("Peso:");
-                    LocalDate data=InputUtils.lerData("Validade:");
-                    Produto novoProduto = new ProdutoPerecivel(codigo, nome, preco, estoque, peso, data);
+                    totProdFis++;
+                } else {
+                    BigDecimal peso=InputUtils.lerBigDecimal("Peso: ");
+                    LocalDate data=InputUtils.lerData("Validade (dd/mm/yyyy): ");
+                    ProdutoPerecivel novoProduto = new ProdutoPerecivel(codigo, nome, preco, estoque, peso, data);
                     //adiciona novo produto no array
-                    produtos[totalProdutos] = novoProduto;
+                    produtosPereciveis[totProdPer] = novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totalProdutos++;
+                    totProdPer++;
                 }
-              
             } else if(opcao == 2) { // Alterar Produto
-                if (produtos[0] != null) {
-                    System.out.print("\tProduto: ");
-                    String nomeProduto = sc.nextLine();
-                    Produto produto = buscarProduto(produtos, nomeProduto);
-                    alterarProduto(produto);
-                } else
-                    System.out.println("\nNenhum produto cadastrado!");
+                System.out.println("Tipo do Produto");
+                tipo = InputUtils.lerIntNumIntervalo("1. Digital, 2. Fisico ou 3. Perecível: ", 1, 3);
+                if(tipo == 1) {
+                    if (produtosDigitais[0] != null) {
+                        System.out.print("\tProduto: ");
+                        String nomeProduto = sc.nextLine();
+                        Produto produto = buscarProduto(produtosDigitais, nomeProduto);
+                        if(produto != null)
+                            alterarProduto(produto);
+                        else
+                            System.out.println("\tProduto não encontrado!");
+                    } else
+                        System.out.println("\nNenhum produto cadastrado!");
+                } else if(tipo == 2) {
+                    if (produtosFisicos[0] != null) {
+                        System.out.print("\tProduto: ");
+                        String nomeProduto = sc.nextLine();
+                        Produto produto = buscarProduto(produtosFisicos, nomeProduto);
+                        if(produto != null)
+                            alterarProduto(produto);
+                        else
+                            System.out.println("\tProduto não encontrado!");
+                    } else
+                        System.out.println("\nNenhum produto cadastrado!");
+                } else {
+                    if (produtosPereciveis[0] != null) {
+                        System.out.print("\tProduto: ");
+                        String nomeProduto = sc.nextLine();
+                        Produto produto = buscarProduto(produtosPereciveis, nomeProduto);
+                        if(produto != null)
+                            alterarProduto(produto);
+                        else
+                            System.out.println("\tProduto não encontrado!");
+                    } else
+                        System.out.println("\nNenhum produto cadastrado!");
+                }
             } else if(opcao == 3) { // Cadastrar Cliente
                 System.out.print("\nCPF: ");
                 sc.nextLine();
@@ -135,7 +170,12 @@ public class Main {
                 
             } else if(opcao == 7) { // Listar Produtos
                 System.out.print("\n");
-                listarProdutos(produtos);
+                if (produtosDigitais[0] != null)
+                    listarProdutos(produtosDigitais);
+                if (produtosFisicos[0] != null)
+                    listarProdutos(produtosFisicos);
+                if (produtosPereciveis[0] != null)
+                    listarProdutos(produtosPereciveis);
             } else if(opcao == 8) { // Listar Clientes
                 System.out.print("\n");
                 listarClientes(clientes);
@@ -161,8 +201,9 @@ public class Main {
 
     private static Produto buscarProduto(Produto[] produtos, String nomeProduto) {
         for(int i=0; i<produtos.length; i++) {
-            if(produtos[i].getNome().equals(nomeProduto))
-                return produtos[i];
+            if(produtos[i] != null)
+                if(produtos[i].getNome().equals(nomeProduto))
+                    return produtos[i];
         }
         return null;
     }
