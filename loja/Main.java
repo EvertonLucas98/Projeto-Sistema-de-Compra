@@ -50,17 +50,17 @@ public class Main {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoFisico[] arrayExtendido = new ProdutoFisico[(produtosFisicos.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProduto(produtosFisicos, arrayExtendido);
+                    copiarProdutos(produtosFisicos, arrayExtendido);
                 } else if(totProdDig == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoDigital[] arrayExtendido = new ProdutoDigital[(produtosDigitais.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProduto(produtosDigitais, arrayExtendido);
+                    copiarProdutos(produtosDigitais, arrayExtendido);
                 } else if(totProdPer == 100) {
                     // Cria um novo array com o dobro de tamanho do array cheio
                     ProdutoPerecivel[] arrayExtendido = new ProdutoPerecivel[(produtosPereciveis.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    copiarProduto(produtosPereciveis, arrayExtendido);
+                    copiarProdutos(produtosPereciveis, arrayExtendido);
                 }
 
                 // Cria um novo produto
@@ -229,7 +229,15 @@ public class Main {
             System.out.println("Produto não encontrado!");
     }
 
-    private static void copiarProduto(Produto[] produto, Produto[] arrayExtendido) {
+    private static void copiarProdutos(Produto[] produto, Produto[] arrayExtendido) {
+        // Copia todos os elementos do array cheio para o array extendido
+        for(int i=0; i<produto.length; i++)
+            arrayExtendido[i] = produto[i];
+        // O array que estava cheio agora tem o dobro de tamanho
+        produto = arrayExtendido;
+    }
+
+    private static void copiarClientes(Produto[] produto, Produto[] arrayExtendido) {
         // Copia todos os elementos do array cheio para o array extendido
         for(int i=0; i<produto.length; i++)
             arrayExtendido[i] = produto[i];
