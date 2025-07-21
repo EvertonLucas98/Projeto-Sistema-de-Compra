@@ -8,8 +8,12 @@ public class ProdutoDigital extends Produto {
         super(codigo, nome, preco, estoque);
         this.categoria=categoria;
     }
-    
-    public void PrintarDados() {
+
+    public String getCategoria(){
+        return this.categoria;
+    }
+
+    public void printarDados() {
         super.printarDados();
         System.out.println("Produto digital-Categoria: "+categoria);
     }
