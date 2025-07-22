@@ -134,8 +134,37 @@ public class Main {
                     // O array que estava cheio agora tem o dobro de tamanho
                     clienteJuridico = arrayExtendido;
                 }
-            } else if(opcao == 4) { // Alterar Cliente (NÃO IMPLEMENTADO)
+
+                // Cria um novo cliente
+                if(tipo==1){
+                    String cpf=InputUtils.lerString("CPF: ");
+                    PessoaFisica novoCliente = new PessoaFisica(id, nome, endereco, telefone, cpf);
+                    //adiciona novo cliente no array
+                    clienteFisico[totClienteFis] = novoCliente;
+                    // Variavel de controle para o tamanho do array
+                    totClienteFis++;
+                } else if(tipo==2){
+                    String cnpj=InputUtils.lerString("CNPJ: ");
+                    PessoaJuridica novoCliente = new PessoaJuridica(id, nome, endereco, telefone, cnpj);
+                    //adiciona novo cliente no array
+                    clienteJuridico[totClienteJur] = novoCliente;
+                    // Variavel de controle para o tamanho do array
+                    totClienteJur++;
+                }
+
+            } else if(opcao == 4) { // Alterar Cliente 
+                System.out.println("Selecione");
+                tipo = InputUtils.lerIntNumIntervalo("1. Pessoa Fisica ou 2. Pessoa Jurídica", 1, 2);
                 
+                if (clienteFisico[0] != null | clienteJuridico[0] != null) {
+                    String nomeCliente = InputUtils.lerString("\tNome: ");
+                    Cliente cliente = buscarCliente(tipo, clienteFisico, clienteJuridico, nomeCliente);
+                    if(cliente != null)
+                        alterarCliente(cliente);
+                    else
+                        System.out.println("\tCliente não encontrado!");
+                } else
+                    System.out.println("\nNenhum cliente cadastrado!");
             } else if(opcao == 5) { // Criar Nota de Compra (NÃO IMPLEMENTADO)
                 String numero = InputUtils.lerString("Numero: ");
                 LocalDate data = InputUtils.lerData("Data: ");
@@ -165,10 +194,11 @@ public class Main {
                     listarProdutos(produtosPereciveis);
                 }
             } else if(opcao == 8) { // Listar Clientes
-                /*if (clienteFisico[0] != null)
-                    listarClientes(produtosPereciveis);
+                System.out.println("\n================ Lista de Clientes ================");
+                if (clienteFisico[0] != null)
+                    listarClientes(clienteJuridico);
                 if (clienteJuridico[0] != null)
-                    listarClientes(produtosPereciveis);*/
+                    listarClientes(clienteFisico);
             } else // Opcao invalida
                 System.out.println("\nOpção Inválida!");
         } while(opcao != 0);
@@ -209,6 +239,21 @@ public class Main {
         return null;
     }
 
+    private static Cliente buscarCliente(int tipo, PessoaFisica[] clienteFisico, PessoaJuridica[] clienteJuridico , String nomeCliente) {
+        if(tipo == 1) {
+            for(int i=0; i<clienteFisico.length; i++)
+                if(clienteFisico[i] != null)
+                    if(clienteFisico[i].getNome().equals(nomeCliente))
+                        return clienteFisico[i];
+        } else if(tipo == 2) {
+            for(int i=0; i<clienteJuridico.length; i++)
+                if(clienteJuridico[i] != null)
+                    if(clienteJuridico[i].getNome().equals(nomeCliente))
+                        return clienteJuridico[i];
+        }
+        return null;
+    }
+
     private static void alterarProduto(Produto produto) {
         if(produto != null) {
             int opcaoProduto;
@@ -239,5 +284,37 @@ public class Main {
             } while(opcaoProduto != 0);
         } else
             System.out.println("Produto não encontrado!");
+    }
+
+    private static void alterarCliente(Cliente cliente) {
+        if(cliente != null) {
+            int opcaoCliente;
+            
+            do {
+                System.out.println("\n\t1. Alterar Nome");
+                System.out.println("\t2. Alterar Endereço");
+                System.out.println("\t3. Alterar Telefone");
+                System.out.println("\t0. Sair");
+                opcaoCliente = InputUtils.lerIntNumIntervalo("\n\tOpção: ", 0, 3);
+
+                if(opcaoCliente == 0) {
+                    System.out.println("\tSaindo das alterações...");
+                } else if(opcaoCliente == 1) {
+                    String novoNome = InputUtils.lerString("\tNovo Nome: ");
+                    cliente.setNome(novoNome);
+                    System.out.println("\tNome alterado com sucesso!");
+                } else if(opcaoCliente == 2) {
+                    String novoEndereco = InputUtils.lerString("\tNovo Endereco: ");
+                    cliente.setEndereco(novoEndereco);
+                    System.out.println("\tEndereco alterado com sucesso!");
+                } else if(opcaoCliente == 3) {
+                    String novoTelefone = InputUtils.lerString("\tNovo Telefone: ");
+                    cliente.setTelefone(novoTelefone);
+                    System.out.println("\tTelefone alterado com sucesso!");
+                } else // Opcao invalida
+                    System.out.println("\nOpção Inválida!");
+            } while(opcaoCliente != 0);
+        } else
+            System.out.println("Cliente não encontrado!");
     }
 }
