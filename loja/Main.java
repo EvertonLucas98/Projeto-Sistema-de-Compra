@@ -159,7 +159,7 @@ public class Main {
                 System.out.println("Selecione");
                 tipo = InputUtils.lerIntNumIntervalo("1. Pessoa Fisica ou 2. Pessoa Jurídica", 1, 2);
                 
-                if (clienteFisico[0] != null | clienteJuridico[0] != null) {
+                if (clientesFisicos[0] != null | clientesJuridicos[0] != null) {
                     String nomeCliente = InputUtils.lerString("\tNome: ");
                     Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
                     if(cliente != null)
