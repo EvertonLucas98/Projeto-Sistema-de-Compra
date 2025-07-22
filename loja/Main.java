@@ -155,7 +155,19 @@ public class Main {
                     // Variavel de controle para o tamanho do array
                     totClienteJur++;
                 }
-            } else if(opcao == 4) { // Alterar Cliente (NÃO IMPLEMENTADO)
+            } else if(opcao == 4) { // Alterar Cliente
+                System.out.println("Selecione");
+                tipo = InputUtils.lerIntNumIntervalo("1. Pessoa Fisica ou 2. Pessoa Jurídica", 1, 2);
+                
+                if (clientesFisicos[0] != null | clientesJuridicos[0] != null) {
+                    String nomeCliente = InputUtils.lerString("\tNome: ");
+                    Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
+                    if(cliente != null)
+                        alterarCliente(cliente);
+                    else
+                        System.out.println("\tCliente não encontrado!");
+                    } else
+                    System.out.println("\nNenhum cliente cadastrado!");
                 
             } else if(opcao == 5) { // Criar Nota de Compra
                 if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
@@ -334,5 +346,36 @@ public class Main {
             } while(opcaoProduto != 0);
         } else
             System.out.println("Produto não encontrado!");
+    }
+    private static void alterarCliente(Cliente cliente) {
+        if(cliente != null) {
+            int opcaoCliente;
+            
+            do {
+                System.out.println("\n\t1. Alterar Nome");
+                System.out.println("\t2. Alterar Endereço");
+                System.out.println("\t3. Alterar Telefone");
+                System.out.println("\t0. Sair");
+                opcaoCliente = InputUtils.lerIntNumIntervalo("\n\tOpção: ", 0, 3);
+
+                if(opcaoCliente == 0) {
+                    System.out.println("\tSaindo das alterações...");
+                } else if(opcaoCliente == 1) {
+                    String novoNome = InputUtils.lerString("\tNovo Nome: ");
+                    cliente.setNome(novoNome);
+                    System.out.println("\tNome alterado com sucesso!");
+                } else if(opcaoCliente == 2) {
+                    String novoEndereco = InputUtils.lerString("\tNovo Endereco: ");
+                    cliente.setEndereco(novoEndereco);
+                    System.out.println("\tEndereco alterado com sucesso!");
+                } else if(opcaoCliente == 3) {
+                    String novoTelefone = InputUtils.lerString("\tNovo Telefone: ");
+                    cliente.setTelefone(novoTelefone);
+                    System.out.println("\tTelefone alterado com sucesso!");
+                } else // Opcao invalida
+                    System.out.println("\nOpção Inválida!");
+            } while(opcaoCliente != 0);
+        } else
+            System.out.println("Cliente não encontrado!");
     }
 }
