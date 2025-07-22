@@ -1,16 +1,24 @@
 package loja.model.cliente;
 
+import loja.model.nota.*;
+
 public class Cliente {
     protected String id;
     protected String nome;
     protected String endereco;
     protected String telefone;
+    protected ItemNota[] itemNota;
+    protected Nota nota;
+    protected int totalItens;
 
     public Cliente(String id, String nome, String endereco, String telefone) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
+        this.itemNota = new ItemNota[100];
+        this.nota = new Nota();
+        this.totalItens = 0;
     }
 
     public String getId() {
@@ -28,6 +36,14 @@ public class Cliente {
     public String getTelefone() {
         return telefone;
     }
+
+    public ItemNota[] getItemNota() {
+        return itemNota;
+    }
+
+    public Nota getNota() {
+        return nota;
+    }
     
     public void setNome(String nome) {
         this.nome = nome;
@@ -41,7 +57,31 @@ public class Cliente {
         this.telefone = telefone;
     }
 
+    public void setItemNota(ItemNota[] itemNota) {
+        this.itemNota = itemNota;
+    }
+
+    public void setNota(Nota nota) {
+        this.nota = nota;
+    }
+
     public void printarDados() {
         System.out.printf("ID: %s | Nome: %s | Endereço: %s | Telefone: %s | ", id, nome, endereco, telefone);
+    }
+
+    public int getTotalItens() {
+        return totalItens;
+    }
+
+    public void setTotalItens(int totalItens) {
+        this.totalItens += totalItens;
+    }
+
+    public void printarNota() {
+        System.out.println("\n\tNota Fiscal #");
+        for(int i=0; i<getTotalItens(); i++) {
+            System.out.print("\tProduto: "+itemNota[i].getProduto().getNome()+" | Preço: "+itemNota[i].getProduto().getPreco()+"");
+            System.out.println(" | Quantidade: "+itemNota[i].getQuantidade()+" | Subtotal: "+itemNota[i].getSubtotal()+"");
+        }
     }
 }

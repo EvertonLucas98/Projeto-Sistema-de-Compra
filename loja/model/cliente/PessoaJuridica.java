@@ -1,7 +1,5 @@
 package loja.model.cliente;
 
-import java.time.LocalDate;
-
 public class PessoaJuridica extends Cliente {
     private String cnpj;
 

@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
 import loja.model.cliente.*;
+import loja.model.nota.*;
 import loja.model.produto.*;
 import loja.ui.ConsoleMenu;
 import loja.ui.InputUtils;
 
 public class Main {
-    public static void main(String[] args) {
+    public
+     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         ProdutoFisico[] produtosFisicos = new ProdutoFisico[2];
@@ -17,8 +19,10 @@ public class Main {
         ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[2];
         PessoaFisica[] clientesFisicos = new PessoaFisica[100];
         PessoaJuridica[] clientesJuridicos = new PessoaJuridica[100];
+        Nota[] notas = new Nota[100];
+        ItemNota[] itens = new ItemNota[100];
         int totProdFis=0, totProdDig=0, totProdPer=0;
-        int totClienteFis=0, totClienteJur=0;
+        int totClienteFis=0, totClienteJur=0, totalItens=0;
         int opcao, tipo;
 
         do {
@@ -159,27 +163,60 @@ public class Main {
                     int tipoCliente = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
                     String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
                     Cliente cliente = buscarCliente(tipoCliente, clientesFisicos, clientesJuridicos, nomeCliente);
-                    if (cliente != null) {
-                        cliente.printarDados();
+                    // Adicionar itens
+                    if(cliente != null) {
+                        String numero = InputUtils.lerString("Numero: ");
+                        LocalDate data = InputUtils.lerData("Data(dd/mm/yyyy): ");
+                        int opcaoCarrinho;
+                        do {
+                            listarProdutos(produtosDigitais, produtosFisicos, produtosPereciveis);
+                            int tipoProduto = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
+                            String nomeProduto = InputUtils.lerString("\tNome do Produto: ");
+                            int qtdProdutos = InputUtils.lerInt("\tQuantidade: ");
+                            Produto produto = buscarProduto(tipoProduto, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
+                            Nota novaNota = new Nota(numero, data, cliente);
+                            if(produto != null && produto.getEstoque() >= qtdProdutos) {
+                                produto.setEstoque(produto.getEstoque()-qtdProdutos);
+                                ItemNota novoItemNota = new ItemNota(produto, qtdProdutos, produto.getPreco());
+                                if (totalItens == itens.length) {
+                                    ItemNota[] arrayExtendido = new ItemNota[(itens.length)*2];
+                                    for(int i=0; i<itens.length; i++)
+                                        arrayExtendido[i] = itens[i];
+                                    itens = arrayExtendido;
+                                }
+                                itens[totalItens] = novoItemNota;
+                                totalItens++;
+                                System.out.println("\tSubtotal: "+novoItemNota.getSubtotal());
+                                BigDecimal total = BigDecimal.ZERO;
+                                for (int i = 0; i < totalItens; i++) {
+                                    total = total.add(itens[i].getSubtotal());
+                                }
+                                System.out.println("\tTotal: "+total);
+                            } else {
+                                System.out.println("\tNão foi possível realizar a operação!");
+                            }
+                            cliente.setTotalItens(1);
+                            opcaoCarrinho = InputUtils.lerIntNumIntervalo("Carrinho\n\t1. Adicionar Produto\n\t0. Confirmar\n\tOpcao: ", 0, 1);
+                            if (opcaoCarrinho == 0) {
+                                cliente.setItemNota(itens);
+                                cliente.setNota(novaNota);
+                            }
+                        } while (opcaoCarrinho != 0);
                     } else {
-                        System.out.println("\nNenhum cliente encontrado!\n");
-                    }
-
-                    listarProdutos(produtosDigitais, produtosFisicos, produtosPereciveis);
-                    int tipoProduto = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
-                    String nomeProduto = InputUtils.lerString("\tNome do Produto: ");
-                    Produto produto = buscarProduto(tipoProduto, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
-                    if (produto != null) {
-                        // String numero = InputUtils.lerString("Numero: ");
-                        // LocalDate data = InputUtils.lerData("Data: ");
-                        produto.printarDados();
-                    } else {
-                        System.out.println("\nNenhum produto encontrado!");
+                        System.out.println("Cliente não encontrado!");
                     }
                 } else
                     System.out.println("\nNenhum produto cadastrado!");
-            } else if(opcao == 6) { // Listar Notas Emitidas (NÃO IMPLEMENTADO)
-                
+            } else if(opcao == 6) { // Listar Notas Emitidas
+                listarClientes(clientesFisicos, clientesJuridicos);
+                tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
+                String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
+                Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
+                if (cliente.getItemNota()[0] != null) {
+                    cliente.printarNota();
+                } else {
+                    System.out.println("Nenhuma nota registrada!");
+                }
             } else if(opcao == 7) { // Listar Produtos
                 System.out.print("\n");
                 if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
