@@ -136,24 +136,37 @@ public class Main {
                 }
             } else if(opcao == 4) { // Alterar Cliente (NÃO IMPLEMENTADO)
                 
-            } else if(opcao == 5) { // Criar Nota de Compra (NÃO IMPLEMENTADO)
-                String numero = InputUtils.lerString("Numero: ");
-                LocalDate data = InputUtils.lerData("Data: ");
-                // Cliente cliente = ; (Preciso de listarClientes)
-                if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
-                    System.out.println("================ Lista de Produtos ================");
-                    listarProdutos(produtosDigitais);
-                    listarProdutos(produtosFisicos);
-                    listarProdutos(produtosPereciveis);
-                    System.out.println("Escolha um tipo do Produto:");
-                    tipo = InputUtils.lerIntNumIntervalo("1. Digital, 2. Fisico ou 3. Perecível: ", 1, 3);
-                    String nomeProduto = InputUtils.lerString("\tNome do produto: ");
-                    Produto produto = buscarProduto(tipo, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
-                    // if(produto != null)
-                        
-                    // else
-                    //     System.out.println("\tProduto não encontrado!");
+            } else if(opcao == 5) { // Criar Nota de Compra
+                // Listando apenas os nomes dos clientes
+                if (totClienteFis == 0 && totClienteJur == 0){
+                    System.out.println("Nenhum cliente foi cadastrado.");
+                } else {
+                    if (totClienteFis > 0){
+                        System.out.println("================ Lista de Clientes ================");
+                        for (int i = 1; i <PessoaFisica.length+1; i++){
+                        Cliente clienteAtendido = PessoaFisica[i-1];
+                        System.out.println(i+". "+clienteAtendido.getNome());
+                    }
+                    if (totClienteJur > 0){
+                        for (int i = 1; i < PessoaJuridica.length+1; i++){
+                            Cliente clienteAtendido = PessoaJuridica[i-1];
+                            int indice = PessoaFisica.length + i;
+                            System.out.println(indice+". "+clienteAtendido.getNome());
+                        }
+                    }
                 }
+                int numCliente = InputUtils.lerInt("Digite o numero referente ao cliente: ");
+                // Ajustando o valor do indice para acessar o cliente certo na lista certa
+                if (numCliente > PessoaFisica.length){
+                    numCliente -= PessoaFisica.length;
+                    Cliente clienteAtendido = PessoaJuridica[numCliente-1];
+                } else{
+                    Cliente clienteAtendido = PessoaFisica[numCliente-1];
+                }
+
+                Nota novaNota = new Nota(clienteAtendido.getNome(), clienteAtendido.getId());
+                novaNota.registrarCompras();
+                novaNota.printaNota();
             } else if(opcao == 6) { // Listar Notas Emitidas (NÃO IMPLEMENTADO)
                 
             } else if(opcao == 7) { // Listar Produtos
