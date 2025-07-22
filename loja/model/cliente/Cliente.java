@@ -80,8 +80,10 @@ public class Cliente {
     public void printarNota() {
         System.out.println("\n\tNota Fiscal #");
         for(int i=0; i<getTotalItens(); i++) {
+            if(itemNota[i]!=null) {
             System.out.print("\tProduto: "+itemNota[i].getProduto().getNome()+" | Preço: "+itemNota[i].getProduto().getPreco()+"");
             System.out.println(" | Quantidade: "+itemNota[i].getQuantidade()+" | Subtotal: "+itemNota[i].getSubtotal()+"");
+        	}
         }
     }
 }
