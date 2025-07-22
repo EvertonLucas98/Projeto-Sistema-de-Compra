@@ -166,7 +166,7 @@ public class Main {
                     // Adicionar itens
                     if(cliente != null) {
                         String numero = InputUtils.lerString("Numero: ");
-                        LocalDate data = InputUtils.lerData("Data(dd/mm/yyyy): ");
+                        LocalDate data = InputUtils.lerData("Data (dd/mm/yyyy): ");
                         int opcaoCarrinho;
                         do {
                             listarProdutos(produtosDigitais, produtosFisicos, produtosPereciveis);
@@ -208,15 +208,19 @@ public class Main {
                 } else
                     System.out.println("\nNenhum produto cadastrado!");
             } else if(opcao == 6) { // Listar Notas Emitidas
-                listarClientes(clientesFisicos, clientesJuridicos);
-                tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
-                String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
-                Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
-                if (cliente.getItemNota()[0] != null) {
-                    cliente.printarNota();
-                } else {
-                    System.out.println("Nenhuma nota registrada!");
-                }
+                if (clientesFisicos[0] != null || clientesJuridicos != null) {
+                    listarClientes(clientesFisicos, clientesJuridicos);
+                    tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
+                    String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
+                    Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
+                    if (cliente.getItemNota()[0] != null) {
+                        cliente.printarNota();
+                    } else {
+                        System.out.println("Nenhuma nota registrada!");
+                    }
+                } else
+                    System.out.println("Nenhum cliente cadastrado!");
+                
             } else if(opcao == 7) { // Listar Produtos
                 System.out.print("\n");
                 if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
