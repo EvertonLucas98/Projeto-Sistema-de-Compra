@@ -23,11 +23,12 @@ public class ConsoleMenu {
     }
 
     public void mostrarMenu() {
-        System.out.println("\n========= "+titulo+" =========");
+        System.out.println("\n========== "+titulo+" ==========");
         for(int i=0; i<opcoes.length; i++) {
             System.out.println((i+1)+". "+opcoes[i]);
         }
         System.out.println("0. Sair");
+        System.out.println("==========================");
     }
     
     public int obterOpcao(Scanner sc) {

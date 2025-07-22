@@ -1,10 +1,10 @@
 package loja.model.cliente;
 
 public class Cliente {
-    private String id;
-    private String nome;
-    private String endereco;
-    private String telefone;
+    protected String id;
+    protected String nome;
+    protected String endereco;
+    protected String telefone;
 
     public Cliente(String id, String nome, String endereco, String telefone) {
         this.id = id;
@@ -42,6 +42,6 @@ public class Cliente {
     }
 
     public void printarDados() {
-        System.out.printf("Identificador: %s | Nome: %s | Endereço: %s | Telefone: %s | ", id, nome, endereco, telefone);
+        System.out.printf("ID: %s | Nome: %s | Endereço: %s | Telefone: %s | ", id, nome, endereco, telefone);
     }
 }
