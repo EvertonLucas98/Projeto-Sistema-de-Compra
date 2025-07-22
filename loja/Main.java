@@ -208,7 +208,7 @@ public class Main {
                 } else
                     System.out.println("\nNenhum produto cadastrado!");
             } else if(opcao == 6) { // Listar Notas Emitidas
-                if (clientesFisicos[0] != null || clientesJuridicos != null) {
+                if (clientesFisicos[0] != null || clientesJuridicos[0] != null) {
                     listarClientes(clientesFisicos, clientesJuridicos);
                     tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
                     String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
