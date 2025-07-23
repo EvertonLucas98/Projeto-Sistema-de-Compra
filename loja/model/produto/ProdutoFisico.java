@@ -12,7 +12,11 @@ public class ProdutoFisico extends Produto {
     public BigDecimal getPeso(){
         return peso;
     }
-
+    
+    public void setPeso(BigDecimal peso) {
+    	this.peso=peso;
+    }
+    
     public void printarDados() {
         super.printarDados();
         System.out.printf("Peso: %.2f\n", peso);

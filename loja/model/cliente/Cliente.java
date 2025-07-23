@@ -1,8 +1,8 @@
 package loja.model.cliente;
-
+import loja.ui.Imprimir;
 import loja.model.nota.*;
 
-public class Cliente {
+public abstract class Cliente implements Imprimir {
     protected String id;
     protected String nome;
     protected String endereco;
