@@ -13,6 +13,10 @@ public class ProdutoPerecivel extends ProdutoFisico {
     public LocalDate getValidade() {
         return validade;
     }
+    
+    public void setValidade(LocalDate validade) {
+    	this.validade=validade;
+    }
 
     public void printarDados() {
         super.printarDadosPereciveis();

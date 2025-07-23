@@ -43,15 +43,12 @@ public class ConsoleMenu {
     public static void executarMenu(){
         Scanner sc = new Scanner(System.in);
 
-        ProdutoFisico[] produtosFisicos = new ProdutoFisico[2];
-        ProdutoDigital[] produtosDigitais = new ProdutoDigital[2];
-        ProdutoPerecivel[] produtosPereciveis = new ProdutoPerecivel[2];
-        PessoaFisica[] clientesFisicos = new PessoaFisica[100];
-        PessoaJuridica[] clientesJuridicos = new PessoaJuridica[100];
+        Produto[] produtos = new Produto[100];
+        Cliente[] clientes = new Cliente[100];
         Nota[] notas = new Nota[100];
         ItemNota[] itens = new ItemNota[100];
-        int totProdFis=0, totProdDig=0, totProdPer=0;
-        int totClienteFis=0, totClienteJur=0, totalItens=0;
+        int totProd=0;
+        int totCliente=0, totalItens=0;
         int opcao, tipo;
 
         do {
@@ -79,62 +76,44 @@ public class ConsoleMenu {
                 tipo = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totProdFis == produtosFisicos.length) {
+                if(totProd == produtos.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
-                    ProdutoFisico[] arrayExtendido = new ProdutoFisico[(produtosFisicos.length)*2];
+                    Produto[] arrayExtendido = new Produto[(produtos.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosFisicos.length; i++)
-                        arrayExtendido[i] = produtosFisicos[i];
+                    for(int i=0; i<produtos.length; i++)
+                        arrayExtendido[i] = produtos[i];
                     // O array que estava cheio agora tem o dobro de tamanho
-                    produtosFisicos = arrayExtendido;
-                } else if(totProdDig == produtosDigitais.length) {
-                    // Cria um novo array com o dobro de tamanho do array cheio
-                    ProdutoDigital[] arrayExtendido = new ProdutoDigital[(produtosDigitais.length)*2];
-                    // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosDigitais.length; i++)
-                        arrayExtendido[i] = produtosDigitais[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    produtosDigitais = arrayExtendido;
-                } else if(totProdPer == produtosPereciveis.length) {
-                    // Cria um novo array com o dobro de tamanho do array cheio
-                    ProdutoPerecivel[] arrayExtendido = new ProdutoPerecivel[(produtosPereciveis.length)*2];
-                    // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<produtosPereciveis.length; i++)
-                        arrayExtendido[i] = produtosPereciveis[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    produtosPereciveis = arrayExtendido;
+                    produtos = arrayExtendido;              
                 }
-
                 // Cria um novo produto
                 if(tipo==1){
                     String categoria=InputUtils.lerString("Categoria: ");
                     ProdutoDigital novoProduto = new ProdutoDigital(codigo, nome, preco, estoque, categoria);
                     //adiciona novo produto no array
-                    produtosDigitais[totProdDig] = novoProduto;
+                    produtos[totProd] = (Produto)novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totProdDig++;
+                    totProd++;
                 } else if(tipo==2){
                     BigDecimal peso=InputUtils.lerBigDecimal("Peso: ");
                     ProdutoFisico novoProduto = new ProdutoFisico(codigo, nome, preco, estoque, peso);
                     //adiciona novo produto no array
-                    produtosFisicos[totProdFis] = novoProduto;
+                    produtos[totProd] = (Produto)novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totProdFis++;
+                    totProd++;
                 } else {
                     BigDecimal peso=InputUtils.lerBigDecimal("Peso: ");
                     LocalDate data=InputUtils.lerData("Validade (dd/mm/yyyy): ");
                     ProdutoPerecivel novoProduto = new ProdutoPerecivel(codigo, nome, preco, estoque, peso, data);
                     //adiciona novo produto no array
-                    produtosPereciveis[totProdPer] = novoProduto;
+                    produtos[totProd] = (Produto)novoProduto;
                     // Variavel de controle para o tamanho do array
-                    totProdPer++;
+                    totProd++;
                 }
-            } else if(opcao == 2) { // Alterar Produto
-                tipo = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
                 
-                if (produtosFisicos[0] != null | produtosDigitais[0] != null | produtosPereciveis[0] != null) {
+            } else if(opcao == 2) { // Alterar Produto               
+                if (produtos[0] != null) {
                     String nomeProduto = InputUtils.lerString("\tProduto: ");
-                    Produto produto = buscarProduto(tipo, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
+                    Produto produto = buscarProduto(produtos, nomeProduto);
                     if(produto != null)
                         alterarProduto(produto);
                     else
@@ -149,48 +128,40 @@ public class ConsoleMenu {
                 tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
 
                 // Dobra o tamanho do array se tiver cheio
-                if(totClienteFis == clientesFisicos.length) {
+                if(totCliente == clientes.length) {
                     // Cria um novo array com o dobro de tamanho do array cheio
-                    PessoaFisica[] arrayExtendido = new PessoaFisica[(clientesFisicos.length)*2];
+                    Cliente[] arrayExtendido = new Cliente[(clientes.length)*2];
                     // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<clientesFisicos.length; i++)
-                        arrayExtendido[i] = clientesFisicos[i];
+                    for(int i=0; i<clientes.length; i++)
+                        arrayExtendido[i] = clientes[i];
                     // O array que estava cheio agora tem o dobro de tamanho
-                    clientesFisicos = arrayExtendido;
-                } else if(totClienteJur == clientesJuridicos.length) {
-                    // Cria um novo array com o dobro de tamanho do array cheio
-                    PessoaJuridica[] arrayExtendido = new PessoaJuridica[(clientesJuridicos.length)*2];
-                    // Copia todos os elementos do array cheio para o array extendido
-                    for(int i=0; i<clientesJuridicos.length; i++)
-                        arrayExtendido[i] = clientesJuridicos[i];
-                    // O array que estava cheio agora tem o dobro de tamanho
-                    clientesJuridicos = arrayExtendido;
+                    clientes = arrayExtendido;
                 }
-
                 // Cria um novo cliente
                 if(tipo==1){
                     String cpf = InputUtils.lerString("CPF: ");
                     LocalDate dataNascimento = InputUtils.lerData("Data de Nascimento(dd/mm/yyy): ");
                     PessoaFisica novoCliente = new PessoaFisica(id, nome, endereco, telefone, cpf, dataNascimento);
                     //adiciona novo cliente no array
-                    clientesFisicos[totClienteFis] = novoCliente;
+                    clientes[totCliente] = novoCliente;
                     // Variavel de controle para o tamanho do array
-                    totClienteFis++;
+                    totCliente++;
                 } else {
                     String cnpj = InputUtils.lerString("CNPJ: ");
                     PessoaJuridica novoCliente = new PessoaJuridica(id, nome, endereco, telefone, cnpj);
                     //adiciona novo cliente no array
-                    clientesJuridicos[totClienteJur] = novoCliente;
+                    clientes[totCliente] = novoCliente;
                     // Variavel de controle para o tamanho do array
-                    totClienteJur++;
+                    totCliente++;
                 }
+                
             } else if(opcao == 4) { // Alterar Cliente
                 System.out.println("Selecione");
                 tipo = InputUtils.lerIntNumIntervalo("1. Pessoa Fisica ou 2. Pessoa Jurídica", 1, 2);
                 
-                if (clientesFisicos[0] != null | clientesJuridicos[0] != null) {
+                if (clientes[0] != null) {
                     String nomeCliente = InputUtils.lerString("\tNome: ");
-                    Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
+                    Cliente cliente = buscarCliente(clientes, nomeCliente);
                     if(cliente != null)
                         alterarCliente(cliente);
                     else
@@ -199,22 +170,20 @@ public class ConsoleMenu {
                     System.out.println("\nNenhum cliente cadastrado!");
                 
             } else if(opcao == 5) { // Criar Nota de Compra
-                if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
-                    listarClientes(clientesFisicos, clientesJuridicos);
-                    int tipoCliente = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
+                if (produtos[0] != null) {
+                    listarClientes(clientes);                   
                     String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
-                    Cliente cliente = buscarCliente(tipoCliente, clientesFisicos, clientesJuridicos, nomeCliente);
+                    Cliente cliente = buscarCliente(clientes, nomeCliente);
                     // Adicionar itens
                     if(cliente != null) {
                         String numero = InputUtils.lerString("Numero: ");
                         LocalDate data = InputUtils.lerData("Data (dd/mm/yyyy): ");
                         int opcaoCarrinho;
                         do {
-                            listarProdutos(produtosDigitais, produtosFisicos, produtosPereciveis);
-                            int tipoProduto = InputUtils.lerIntNumIntervalo("Tipo do Produto\n\t1. Digital\n\t2. Fisico\n\t3. Perecível\n\tTipo: ", 1, 3);
+                            listarProdutos(produtos);
                             String nomeProduto = InputUtils.lerString("\tNome do Produto: ");
                             int qtdProdutos = InputUtils.lerInt("\tQuantidade: ");
-                            Produto produto = buscarProduto(tipoProduto, produtosFisicos, produtosDigitais, produtosPereciveis, nomeProduto);
+                            Produto produto = buscarProduto(produtos, nomeProduto);
                             Nota novaNota = new Nota(numero, data, cliente);
                             if(produto != null && produto.getEstoque() >= qtdProdutos) {
                                 produto.setEstoque(produto.getEstoque()-qtdProdutos);
@@ -249,11 +218,10 @@ public class ConsoleMenu {
                 } else
                     System.out.println("\nNenhum produto cadastrado!");
             } else if(opcao == 6) { // Listar Notas Emitidas
-                if (clientesFisicos[0] != null || clientesJuridicos[0] != null) {
-                    listarClientes(clientesFisicos, clientesJuridicos);
-                    tipo = InputUtils.lerIntNumIntervalo("Tipo de Cliente\n\t1. Pessoa Fisica\n\t2. Pessoa Juridica\n\tTipo: ", 1, 2);
+                if (clientes[0] != null) {
+                    listarClientes(clientes);
                     String nomeCliente = InputUtils.lerString("\tNome do Cliente: ");
-                    Cliente cliente = buscarCliente(tipo, clientesFisicos, clientesJuridicos, nomeCliente);
+                    Cliente cliente = buscarCliente(clientes, nomeCliente);
                     if (cliente.getItemNota()[0] != null) {
                         cliente.printarNota();
                     } else {
@@ -264,83 +232,57 @@ public class ConsoleMenu {
                 
             } else if(opcao == 7) { // Listar Produtos
                 System.out.print("\n");
-                if (produtosDigitais[0] != null || produtosFisicos[0] != null || produtosPereciveis[0] != null) {
-                    listarProdutos(produtosDigitais, produtosFisicos, produtosPereciveis);
+                if (produtos[0] != null) {
+                    listarProdutos(produtos);
                 } else
                     System.out.println("Nenhum produto cadastrado!");
             } else if(opcao == 8) { // Listar Clientes
                 System.out.print("\n");
-                if (clientesFisicos[0] != null || clientesJuridicos[0] != null) {
-                    listarClientes(clientesFisicos, clientesJuridicos);
+                if (clientes[0] != null) {
+                    listarClientes(clientes);
                 } else
                     System.out.println("Nenhum cliente cadastrado!");
             } else // Opcao invalida
                 System.out.println("\nOpção Inválida!");
         } while(opcao != 0);
         sc.close();
-    }
-    private static void listarProdutos(Produto[] produtosDigitais, Produto[] produtosFisicos, Produto[] produtosPereciveis) {
+        }
+ 
+
+    private static void listarProdutos(Produto[] produtos) {
         System.out.println("================ Lista de Produtos ================");
-        for(int i=0; i<produtosDigitais.length; i++) {
-            if(produtosDigitais[i] != null)
-                produtosDigitais[i].printarDados();
-        }
-        for(int i=0; i<produtosFisicos.length; i++) {
-            if(produtosFisicos[i] != null)
-                produtosFisicos[i].printarDados();
-        }
-        for(int i=0; i<produtosPereciveis.length; i++) {
-            if(produtosPereciveis[i] != null)
-                produtosPereciveis[i].printarDados();
+        for(int i=0; i<produtos.length; i++) {
+            if(produtos[i] != null)
+                produtos[i].printarDados();
         }
         System.out.println("===================================================");
     }
     
-    private static void listarClientes(Cliente[] clientesFisicos, Cliente[] clientesJuridicos) {
+    private static void listarClientes(Cliente[] clientes) {
         System.out.println("================ Lista de Clientes ================");
-        for(int i=0; i<clientesFisicos.length; i++) {
-            if(clientesFisicos[i] != null)
-                clientesFisicos[i].printarDados();
-        }
-        for(int i=0; i<clientesJuridicos.length; i++) {
-            if(clientesJuridicos[i] != null)
-                clientesJuridicos[i].printarDados();
+        for(int i=0; i<clientes.length; i++) {
+            if(clientes[i] != null)
+                clientes[i].printarDados();
         }
         System.out.println("===================================================");
     }
 
-    private static Produto buscarProduto(int tipo, Produto[] produtosFisicos, Produto[] produtosDigitais, Produto[] produtosPereciveis, String nomeProduto) {
-        if(tipo == 1) {
-            for(int i=0; i<produtosDigitais.length; i++)
-                if(produtosDigitais[i] != null)
-                    if(produtosDigitais[i].getNome().equals(nomeProduto))
-                        return produtosDigitais[i];
-        } else if(tipo == 2) {
-            for(int i=0; i<produtosFisicos.length; i++)
-                if(produtosFisicos[i] != null)
-                    if(produtosFisicos[i].getNome().equals(nomeProduto))
-                        return produtosFisicos[i];
-        } else {
-            for(int i=0; i<produtosPereciveis.length; i++)
-                if(produtosPereciveis[i] != null)
-                    if(produtosPereciveis[i].getNome().equals(nomeProduto))
-                        return produtosPereciveis[i];
-        }
+    private static Produto buscarProduto(Produto[] produtos,String nomeProduto) {     
+        for(int i=0; i<produtos.length; i++)
+                if(produtos[i] != null)
+                    if(produtos[i].getNome().equals(nomeProduto))
+                        return produtos[i];
+        
         return null;
     }
 
-    private static Cliente buscarCliente(int tipo, Cliente[] clientesFisicos, Cliente[] clientesJuridicos, String nomeCliente) {
-        if(tipo == 1) {
-            for(int i=0; i<clientesFisicos.length; i++)
-                if(clientesFisicos[i] != null)
-                    if(clientesFisicos[i].getNome().equals(nomeCliente))
-                        return clientesFisicos[i];
-        } else {
-            for(int i=0; i<clientesJuridicos.length; i++)
-                if(clientesJuridicos[i] != null)
-                    if(clientesJuridicos[i].getNome().equals(nomeCliente))
-                        return clientesJuridicos[i];
-        }
+    private static Cliente buscarCliente(Cliente[] clientes, String nomeCliente) {
+        
+            for(int i=0; i<clientes.length; i++){
+                if(clientes[i] != null)
+                    if(clientes[i].getNome().equals(nomeCliente))
+                        return clientes[i];
+            }
         return null;
     }
 
@@ -352,8 +294,11 @@ public class ConsoleMenu {
                 System.out.println("\n\t1. Alterar Nome");
                 System.out.println("\t2. Alterar Preço");
                 System.out.println("\t3. Alterar Estoque");
+                if(produto instanceof ProdutoDigital) {System.out.println("\t4. Alterar Categoria");}
+                if(produto instanceof ProdutoFisico) {System.out.println("\t4. Alterar Peso");}
+                if(produto instanceof ProdutoPerecivel) {System.out.println("\t5. Alterar Validade");}
                 System.out.println("\t0. Sair");
-                opcaoProduto = InputUtils.lerIntNumIntervalo("\n\tOpção: ", 0, 3);
+                opcaoProduto = InputUtils.lerIntNumIntervalo("\n\tOpção: ", 0, 5);
 
                 if(opcaoProduto == 0) {
                     System.out.println("\tSaindo das alterações...");
@@ -369,7 +314,22 @@ public class ConsoleMenu {
                     int novoEstoque = InputUtils.lerInt("\tNovo Estoque: ");
                     produto.setEstoque(novoEstoque);
                     System.out.println("\tEstoque alterado com sucesso!");
-                } else // Opcao invalida
+                } else if(opcaoProduto==4) {
+                	if(produto instanceof ProdutoDigital) {
+                		String novaCategoria = InputUtils.lerString("\tNova Categoria: ");
+                		((ProdutoDigital) produto).setCategoria(novaCategoria);
+                		System.out.println("\tCategoria alterada com sucesso!");
+                	}
+                	if(produto instanceof ProdutoFisico) {
+                		BigDecimal novoPeso = InputUtils.lerBigDecimal("\tNovo Peso: ");
+                		((ProdutoFisico) produto).setPeso(novoPeso);
+                		System.out.println("\tPeso alterado com sucesso!");
+                	}
+                } else if(opcaoProduto==5 && produto instanceof ProdutoPerecivel) {
+                	LocalDate novaData =  InputUtils.lerData("\tNova Data: ");
+                	((ProdutoPerecivel)produto).setValidade(novaData);
+                	System.out.println("\tValidade alterada com sucesso!");
+                }else
                     System.out.println("\nOpção Inválida!");
             } while(opcaoProduto != 0);
         } else

@@ -1,7 +1,8 @@
 package loja.model.produto;
 import java.math.BigDecimal;
+import loja.ui.Imprimir;
 
-public class Produto {
+public abstract class Produto implements Imprimir{
     private int codigo;
     private String nome;
     private BigDecimal preco;
@@ -41,7 +42,7 @@ public class Produto {
         this.estoque=novoEstoque;
     }
     
-    public void printarDados() {
+    public  void printarDados() {
         System.out.printf("Produto %d: %s | R$ %s | %d unidades | ", codigo, nome, preco, estoque);
     }
 }
