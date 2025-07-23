@@ -210,6 +210,10 @@ public class ConsoleMenu {
                             if (opcaoCarrinho == 0) {
                                 cliente.setItemNota(itens);
                                 cliente.setNota(novaNota);
+
+                                System.out.println("\n\tNota Fiscal #");
+                                System.out.print("\tProduto: "+itens[totalItens-1].getProduto().getNome()+" | Preço: "+itens[totalItens-1].getProduto().getPreco()+"");
+                                System.out.println(" | Quantidade: "+itens[totalItens-1].getQuantidade()+" | Subtotal: "+itens[totalItens-1].getSubtotal()+"");
                             }
                         } while (opcaoCarrinho != 0);
                     } else {
